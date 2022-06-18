@@ -49,7 +49,8 @@ export const NavButton = styled(IconButton)({
 })
 
 export const MenuButton = styled(Button)({
-    borderRadius: '0 50% 50% 0',
+    borderRadius: 25,
+    minWidth: 80,
     backgroundColor: 'rgba(28, 31, 29, .8)',
     marginTop: 10,
     marginRight: 15,
