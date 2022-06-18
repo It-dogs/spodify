@@ -1,9 +1,11 @@
 import React from "react";
+import Main from "./views/main";
+
 
 function App() {
   return (
     <div className="App">
-      Hello spodify!
+      <Main />
     </div>
   );
 }
