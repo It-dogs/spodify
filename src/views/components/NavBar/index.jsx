@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Paper, AppBar, Toolbar, Typography, TextField, InputAdornment, IconButton } from "@mui/material";
+import { AppBar, Toolbar, Typography, TextField, InputAdornment, IconButton } from "@mui/material";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
@@ -47,7 +47,7 @@ const NavBar = (props) => {
             disableUnderline: true,
             startAdornment: 
               <InputAdornment position="start">
-                <SearchOutlinedIcon />
+                <SearchOutlinedIcon style={{marginLeft: 10, marginTop: 1}} />
               </InputAdornment>,
             endAdornment: value && (
               <IconButton
@@ -58,12 +58,9 @@ const NavBar = (props) => {
           inputProps={{
             sx: {
               "&::placeholder": {
-                color: Color.GREY,
-                marginTop: 15
+                color: Color.GREY
               },
-              width: '80%',
-              display: 'flex',
-              justifyContent: 'center'
+              width: '80%'
             }
           }}
           onInput={(e) => {

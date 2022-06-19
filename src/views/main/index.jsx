@@ -12,18 +12,16 @@ const mainStyle = createUseStyles({
     display: 'flex',
     flexDirection: 'row',
     height: '100%',
-    width: '100%',
-    backgroundColor: Color.DEEP_BLACK
-  },
+    width: '100%'
+  }
 })
 
 export default function Main(props) {
   const classes = mainStyle();
-  const ref = useRef(0);
   
   return (
     <div className={classes.container}>
-      <Sidebar ref={ref} />
+      <Sidebar />
       <div className="appFrame"> 
         <Menu />
       </div>

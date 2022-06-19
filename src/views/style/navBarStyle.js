@@ -30,12 +30,16 @@ export const navbarStyle = createUseStyles({
         backgroundColor: '#FFFFFF',
         width: 350,
         height: 35,
-        borderRadius: 15,
+        borderRadius: 25,
         display: 'flex',
         justifyContent: 'center'
     },
     menu: {
         background: Color.DEEP_BLACK
+    },
+    linkPw: {
+        marginTop: 250,
+        border: 'solid'
     }
 })
 
@@ -51,7 +55,7 @@ export const NavButton = styled(IconButton)({
 export const MenuButton = styled(Button)({
     borderRadius: 25,
     minWidth: 80,
-    backgroundColor: 'rgba(28, 31, 29, .8)',
+    backgroundColor: Color.DEEP_GREY,
     marginTop: 10,
     marginRight: 15,
     color: '#FFFFFF'
