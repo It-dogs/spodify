@@ -31,9 +31,7 @@ export default function Login(props) {
             </Toolbar>
           </AppBar>
           <div className={classes.wrapper}>
-            <Title>
-              LOGIN
-            </Title>
+            <Title>LOGIN</Title>
             <div className={classes.innerWrapper}>
               <div className={classes.labelText}>
                 <Label>
@@ -55,7 +53,7 @@ export default function Login(props) {
                 onChange={(e)=>setStateObj({...stateObj, pw: e.target.value})}
               />
               <div className={classes.linkPw}>
-                <Link href="#" color={Color.GREY}>Forgot your password?</Link>
+                <Link component="button" color={Color.GREY} onClick={()=>navigate('/forgot/password')}>Forgot your password?</Link>
               </div>
               <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
                 <div style={{display:'flex', flexDirection:'row', marginTop:8}}>

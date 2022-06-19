@@ -26,8 +26,7 @@ export const loginStyle = createUseStyles({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
-        //border: 'solid'
+        justifyContent: 'center'
     },
     innerWrapper: {
         width: '100%',

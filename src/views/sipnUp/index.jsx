@@ -1,7 +1,6 @@
 import React, { useState, useLayoutEffect } from "react";
 import { AppBar, Toolbar, Typography, Box, Avatar, Link, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
-import Lens from '@mui/icons-material/Lens';
 import { Color } from '../style/color';
 import { signUpStyle } from '../style/signUpStyle';
 import { Title, Label, Input, SignUpButton } from '../style/signUpStyle';
