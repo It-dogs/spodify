@@ -1,18 +1,24 @@
-import React, { useState, useLayoutEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { AppBar, Toolbar, Typography, Box, Avatar, Checkbox, Link } from "@mui/material";
 import { loginStyle } from '../style/loginStyle';
 import { useNavigate } from 'react-router-dom';
 import { Color } from '../style/color';
 import { Title, Label, Input, LoginButton, SignUpButton } from '../style/loginStyle';
 import logo from '../../image/logo_green.png';
+import * as authorization from "../../authorization";
+
 
 export default function Login(props) {
     const [stateObj, setStateObj] = useState({email: 'spotify-clone@gmail.com', pw: 'abc123'});
+    const { api_uri, client_id, redirect_uri, scopes } = authorization;
     const classes = loginStyle();
     const navigate = useNavigate();
+ 
 
     const handleLogin = () => {
-
+      window.location.href = `${api_uri}?client_id=${client_id}&redirect_uri=${redirect_uri}/callback&scope=${scopes.join(
+        " "
+      )}&response_type=token&show_dialog=false`;
     }
 
     return (
