@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-d
 import Login from "./views/login";
 import SignUp from "./views/sipnUp";
 import ForgotPw from "./views/forgotPw";
-import Main from "./views/main";
+import Dashboard from "./views/dashboard";
 
 function App() {
   const [token, setToken] = useState(null);
@@ -22,7 +22,7 @@ function App() {
         <Route path="/callback" caseSensitive={false} element={ token? <Navigate to="/home" />:<Login /> } />
         <Route path="/sign_up" caseSensitive={false} element={ <SignUp /> } />
         <Route path="/forgot/password" caseSensitive={false} element={ <ForgotPw /> } />
-        <Route path="/home" caseSensitive={false} element={ token? <Main token={token} />:<Navigate to="/" /> } />
+        <Route path="/home" caseSensitive={false} element={ token? <Dashboard token={token} />:<Navigate to="/" /> } />
       </Routes>
     </Router>
   );

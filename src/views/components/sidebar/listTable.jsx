@@ -51,7 +51,7 @@ export default function ListTable(props) {
    
    //emit signal for tab change in sidebar
    useEffect(() => {
-      switch(activeItem) {
+      switch(activeItem.index) {
         case 0: 
           emitter.emit('home');
           break;

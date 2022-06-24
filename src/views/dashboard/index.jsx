@@ -9,15 +9,14 @@ import '../style/sidebarStyle.css';
 
 const mainStyle = createUseStyles({
   container: {
-    minHeight: '100vh',
+    height: '100%',
     display: 'flex',
     flexDirection: 'row',
-    height: '100%',
     width: '100%'
   }
 })
 
-export default function Main(props) {
+export default function Dashboard(props) {
   const classes = mainStyle();
 
   return (

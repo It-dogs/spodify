@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { createUseStyles } from 'react-jss';
-import { Color } from '../../style/color';
-import axios from 'axios';
 import NavBar from '../NavBar';
+import Home from '../../home';
 import emitter from '../../utils/emitter';
 import spotifyWebApi from 'spotify-web-api-js';
+import _ from 'lodash';
 
 //create instance for spotify web api
 const spotify = new spotifyWebApi();
@@ -13,7 +13,9 @@ const categories = ['toplists'];  //Global Top 50
 
 const menuStyle = createUseStyles({
   container: {
-    width: '100%'
+    width: '100%',
+    height: '100%',
+    //overflowY: 'auto'
   }
 })
 
@@ -21,6 +23,7 @@ const Menu = (props) => {
     const classes = menuStyle();
     const { token } = props;
     const [currentPage, setCurrentPage] = useState('home');
+    const [topList, setTopList] = useState([]);
 
     //listen to the tab change
     useEffect(() => {
@@ -32,13 +35,13 @@ const Menu = (props) => {
       
       //if token exist, register that token to the api
       token && spotify.setAccessToken(token);
-      //call spotify web api for list of category playlists
+
+      /* //call spotify web api for list of categories
       spotify
-        .getCategoryPlaylists('top50')
+        .getCategories()
           .then(data=>console.log(data))
             .catch(err=>console.log(err));
-
-
+      */
       return () => {
         emitter.off('home');
         emitter.off('search');
@@ -48,10 +51,39 @@ const Menu = (props) => {
       }
     }, [token]);
 
+    useEffect(() => {
+      spotify
+        .getCategoryPlaylists('toplists')
+          .then(data => {
+            console.log(data.playlists.items);
+            const playList = data.playlists.items;
+            let list = [...topList];
+            playList.forEach(item => {
+              let temp = {};
+              temp.id = item.id? item.id:null;
+              temp.description = item.description? item.description:null;
+              temp.url = item.images[0].url? item.images[0].url:null;
+              temp.name = item.name? item.name:null;
+              temp.tracks = item.tracks.href? item.tracks.href:null;
+              !_.isEmpty(temp) && list.push(temp);
+            });
+            setTopList(list);
+          })
+            .catch(err=>console.log(err));
+    }, []);
+
+
+    const handleMenuContent = () => <>
+      <div style={{display: currentPage==='home'? 'block':'none', height: '100%'}}>
+        <Home topList={topList} />
+      </div>
+      
+    </>
+
     return (
       <div className={classes.container}>
         <NavBar />
-
+        {handleMenuContent()}
       </div>
     );
 }
@@ -59,8 +91,6 @@ const Menu = (props) => {
 export default Menu;
 
 /*
-
-
 
 {
   "playlists" : {
@@ -322,7 +352,7 @@ export default Menu;
       },
       "primary_color" : null,
       "public" : null,
-      "snapshot_id" : "NzA5MzAyMDc0LDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDY1NmU=",
+      "snapshot_id" : "NzA5MzkyNDYwLDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDY1NmU=",
       "tracks" : {
         "href" : "https://api.spotify.com/v1/playlists/37i9dQZEVXbLRQDuF5jeBp/tracks",
         "total" : 50
@@ -355,7 +385,7 @@ export default Menu;
       },
       "primary_color" : null,
       "public" : null,
-      "snapshot_id" : "NzA5MzAyMDcxLDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDY1NmU=",
+      "snapshot_id" : "NzA5MzkyNDY5LDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDY1NmU=",
       "tracks" : {
         "href" : "https://api.spotify.com/v1/playlists/37i9dQZEVXbMDoHDwVN2tF/tracks",
         "total" : 50
@@ -388,7 +418,7 @@ export default Menu;
       },
       "primary_color" : null,
       "public" : null,
-      "snapshot_id" : "NzA5MzA2MDg4LDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDY1NmU=",
+      "snapshot_id" : "NzA5Mzk2OTY5LDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDY1NmU=",
       "tracks" : {
         "href" : "https://api.spotify.com/v1/playlists/37i9dQZEVXbLiRSasKsNU9/tracks",
         "total" : 50
@@ -421,7 +451,7 @@ export default Menu;
       },
       "primary_color" : null,
       "public" : null,
-      "snapshot_id" : "NzA5MzA2MDc4LDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDY1NmU=",
+      "snapshot_id" : "NzA5Mzk2OTY0LDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDY1NmU=",
       "tracks" : {
         "href" : "https://api.spotify.com/v1/playlists/37i9dQZEVXbKuaTI1Z1Afx/tracks",
         "total" : 50
