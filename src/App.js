@@ -5,7 +5,6 @@ import SignUp from "./views/sipnUp";
 import ForgotPw from "./views/forgotPw";
 import Main from "./views/main";
 
-
 function App() {
   const [token, setToken] = useState(null);
   
@@ -23,7 +22,7 @@ function App() {
         <Route path="/callback" caseSensitive={false} element={ token? <Navigate to="/home" />:<Login /> } />
         <Route path="/sign_up" caseSensitive={false} element={ <SignUp /> } />
         <Route path="/forgot/password" caseSensitive={false} element={ <ForgotPw /> } />
-        <Route path="/home" caseSensitive={false} element={ token? <Main />:<Navigate to="/" /> } />
+        <Route path="/home" caseSensitive={false} element={ token? <Main token={token} />:<Navigate to="/" /> } />
       </Routes>
     </Router>
   );

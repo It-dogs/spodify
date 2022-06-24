@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, Box, Avatar, Checkbox, Link } from "@mui/material";
 import { loginStyle } from '../style/loginStyle';
 import { useNavigate } from 'react-router-dom';
@@ -7,14 +7,12 @@ import { Title, Label, Input, LoginButton, SignUpButton } from '../style/loginSt
 import logo from '../../image/logo_green.png';
 import * as authorization from "../../authorization";
 
-
 export default function Login(props) {
     const [stateObj, setStateObj] = useState({email: 'spotify-clone@gmail.com', pw: 'abc123'});
     const { api_uri, client_id, redirect_uri, scopes } = authorization;
     const classes = loginStyle();
     const navigate = useNavigate();
  
-
     const handleLogin = () => {
       window.location.href = `${api_uri}?client_id=${client_id}&redirect_uri=${redirect_uri}/callback&scope=${scopes.join(
         " "
@@ -25,10 +23,10 @@ export default function Login(props) {
         <div className={classes.container}>
           <AppBar sx={{ boxShadow: 'none', backgroundColor: Color.LIGHT_BLACK}}>
             <Toolbar sx={{ 
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center'
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center'
             }}>
               <Box className={classes.box}>
                 <Avatar alt="logo" src={logo} sx={{ marginTop: 1 , width: 65, height: 65 }} />

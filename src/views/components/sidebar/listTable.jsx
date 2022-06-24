@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 import React, { useState, useEffect } from "react";
 import classnames from 'classnames';
 import { Box, Avatar, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
@@ -9,6 +10,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import { Color } from '../../style/color';
 import logo from '../../../image/logo_white.png';
+import emitter from '../../utils/emitter';
 
 const tableStyle = createUseStyles({
     container: {
@@ -45,6 +47,29 @@ export default function ListTable(props) {
    const [hoverItem, setHoverItem] = useState({index: null});
    const [activeItem, setActiveItem] = useState({index: 0});
    const classes = tableStyle();
+
+   
+   //emit signal for tab change in sidebar
+   useEffect(() => {
+      switch(activeItem) {
+        case 0: 
+          emitter.emit('home');
+          break;
+        case 1: 
+          emitter.emit('search');
+          break;
+        case 2: 
+          emitter.emit('library');
+          break;
+        case 3: 
+          emitter.emit('create_playlist');
+          break;
+        case 4: 
+          emitter.emit('liked_songs');
+          break;
+      }
+   }, [activeItem]);
+
 
    return (
     <div className={classes.container}>

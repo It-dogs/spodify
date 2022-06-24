@@ -1,5 +1,6 @@
-import React, { useState, useLayoutEffect, useRef } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { createUseStyles } from 'react-jss';
+import axios from 'axios';
 
 import { Color }  from '../style/color';
 import Sidebar from "../components/sidebar/sidebar";
@@ -18,12 +19,12 @@ const mainStyle = createUseStyles({
 
 export default function Main(props) {
   const classes = mainStyle();
-  
+
   return (
     <div className={classes.container}>
       <Sidebar />
       <div className="appFrame"> 
-        <Menu />
+        <Menu {...props} />
       </div>
     </div>
   ); 
