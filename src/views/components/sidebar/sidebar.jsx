@@ -3,6 +3,7 @@ import '../../style/sidebarStyle.css';
 import ListTable from "./listTable";
 
 export default function Sidebar(props) {
+  const { updateWidthOfSidebar } = props;
   const sidebarRef = useRef(null);
   const [isResizing, setIsResizing] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState(268);
@@ -17,7 +18,8 @@ export default function Sidebar(props) {
 
   const resize = React.useCallback(
     (mouseMoveEvent) => {
-      if (isResizing) {
+      if (isResizing && mouseMoveEvent.clientX -
+        sidebarRef.current.getBoundingClientRect().left>=180) {
         setSidebarWidth(
           mouseMoveEvent.clientX -
             sidebarRef.current.getBoundingClientRect().left
@@ -27,6 +29,7 @@ export default function Sidebar(props) {
     [isResizing]
   );
 
+
   useEffect(() => {
     window.addEventListener("mousemove", resize);
     window.addEventListener("mouseup", stopResizing);
@@ -35,6 +38,17 @@ export default function Sidebar(props) {
       window.removeEventListener("mouseup", stopResizing);
     };
   }, [resize, stopResizing]);
+  
+
+  useEffect(() => {
+    sidebarRef.current && ( setSidebarWidth(sidebarRef.current.clientWidth) && updateWidthOfSidebar(sidebarRef.current.clientWidth));
+  }, []);
+
+
+  useEffect(() => {
+    updateWidthOfSidebar(sidebarWidth);
+  }, [sidebarWidth]);
+
 
   return (
     <>

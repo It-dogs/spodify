@@ -5,23 +5,23 @@ import { Color } from '../style/color';
 
 const homeStyle = createUseStyles({
     container: {
-      width: 'inherit',
-      height: '100%',
-      'justify-self': 'center',
+      maxWidth: '100%',
+      height: 200,
       padding: 30,
-      display: 'flex',
+      display: 'block',
       flexDirection: 'row',
-      'flex-wrap': 'wrap',
-      justifyContent: 'space-between',
-      overflowY: 'auto',
-      border: 'solid', borderColor: '#FF11FF'
+      //'flex-wrap': 'wrap',
+      //justifyContent: 'space-around',
+      //'white-space': 'nowrap',
+      overflow: 'hidden'
     },
     card: {
+      marginLeft: 25,
       width: 180, 
       height: 250, 
       marginTop: 20,
       borderRadius: 5,
-      display: 'flex', 
+      display: 'inline-block', 
       justifyContent: '100%', 
       background: Color.LIGHT_BLACK,
       '& :hover': {

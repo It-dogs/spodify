@@ -5,17 +5,18 @@ import Home from '../../home';
 import emitter from '../../utils/emitter';
 import spotifyWebApi from 'spotify-web-api-js';
 import _ from 'lodash';
+import { Typography } from "@mui/material";
 
 //create instance for spotify web api
 const spotify = new spotifyWebApi();
 
-const categories = ['toplists'];  //Global Top 50
+const categories = {topLists: 'Top Lists'};  //Global Top 50
 
 const menuStyle = createUseStyles({
   container: {
     width: '100%',
     height: '100%',
-    //overflowY: 'auto'
+    overflowY: 'auto'
   }
 })
 
@@ -36,12 +37,12 @@ const Menu = (props) => {
       //if token exist, register that token to the api
       token && spotify.setAccessToken(token);
 
-      /* //call spotify web api for list of categories
+      //call spotify web api for list of categories
       spotify
         .getCategories()
           .then(data=>console.log(data))
             .catch(err=>console.log(err));
-      */
+    
       return () => {
         emitter.off('home');
         emitter.off('search');
@@ -55,7 +56,7 @@ const Menu = (props) => {
       spotify
         .getCategoryPlaylists('toplists')
           .then(data => {
-            console.log(data.playlists.items);
+            //console.log(data.playlists.items);
             const playList = data.playlists.items;
             let list = [...topList];
             playList.forEach(item => {
@@ -74,10 +75,10 @@ const Menu = (props) => {
 
 
     const handleMenuContent = () => <>
-      <div style={{display: currentPage==='home'? 'block':'none', height: '100%'}}>
+      <div style={{display: currentPage==='home'? 'flex':'none', height: '100%', flexDirection: 'column', justifyContent: 'start' }}>
+        <Typography sx={{color: '#FFFFFF'}}>{categories.topLists}</Typography>
         <Home topList={topList} />
       </div>
-      
     </>
 
     return (

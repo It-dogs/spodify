@@ -105,6 +105,7 @@ const NavBar = (props) => {
                 anchorEl={anchorEl}
                 open={open}
                 onClose={handleClose}
+                transformOrigin={{ vertical: "top", horizontal: "center" }}
                 PaperProps={{
                   style: {
                     backgroundColor: Color.DEEP_GREY,
