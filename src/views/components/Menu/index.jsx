@@ -10,7 +10,7 @@ import { Typography } from "@mui/material";
 //create instance for spotify web api
 const spotify = new spotifyWebApi();
 
-const categories = {topLists: 'Top Lists'};  //Global Top 50
+//const categories = {topLists: 'Top Lists'};  //Global Top 50
 
 const menuStyle = createUseStyles({
   container: {
@@ -24,7 +24,8 @@ const Menu = (props) => {
     const classes = menuStyle();
     const { token } = props;
     const [currentPage, setCurrentPage] = useState('home');
-    const [topList, setTopList] = useState([]);
+    //const [topList, setTopList] = useState([]);
+    const [categories, setCategories] = useState([]);
 
     //listen to the tab change
     useEffect(() => {
@@ -37,11 +38,22 @@ const Menu = (props) => {
       //if token exist, register that token to the api
       token && spotify.setAccessToken(token);
 
-      //call spotify web api for list of categories
+     /*  //call spotify web api for list of categories
       spotify
         .getCategories()
-          .then(data=>console.log(data))
-            .catch(err=>console.log(err));
+          .then(data=> {
+            console.log(data);
+            let list = [];
+            const categoryList = data.categoryList.categories.items;
+            categoryList.forEach(item => {
+              let temp = {};
+              temp.id = item.id? item.id:null;
+              temp.name = item.name? item.name:null;
+              !_.isEmpty(temp) && list.push(temp);
+            });
+            setCategories(list);
+          })
+            .catch(err=>console.log(err)); */
     
       return () => {
         emitter.off('home');
@@ -53,8 +65,26 @@ const Menu = (props) => {
     }, [token]);
 
     useEffect(() => {
+      
+      //call spotify web api for list of categories
       spotify
-        .getCategoryPlaylists('toplists')
+        .getCategories()
+          .then(data=> {
+            console.log(data);
+            let list = [];
+            const categoryList = data.categories.items;
+            categoryList.forEach(item => {
+              let temp = {};
+              temp.id = item.id? item.id:null;
+              temp.name = item.name? item.name:null;
+              !_.isEmpty(temp) && list.push(temp);
+            });
+            setCategories(list);
+          })
+            .catch(err=>console.log(err));
+
+      /* spotify
+        .getCategoryPlaylists('pop')
           .then(data => {
             //console.log(data.playlists.items);
             const playList = data.playlists.items;
@@ -70,14 +100,14 @@ const Menu = (props) => {
             });
             setTopList(list);
           })
-            .catch(err=>console.log(err));
+            .catch(err=>console.log(err)); */
     }, []);
 
 
     const handleMenuContent = () => <>
       <div style={{display: currentPage==='home'? 'flex':'none', height: '100%', flexDirection: 'column', justifyContent: 'start' }}>
-        <Typography sx={{color: '#FFFFFF'}}>{categories.topLists}</Typography>
-        <Home topList={topList} />
+        <Typography variant='h5' sx={{color: '#FFFFFF', paddingLeft: 5}}>{categories.topLists}</Typography>
+        <Home token={token} categories={categories} spotify={spotify}/>
       </div>
     </>
 
