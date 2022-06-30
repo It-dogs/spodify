@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, CardContent, CardActionArea, CardActions, CardMedia, Typography } from '@mui/material';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import useWindowSize from "../utils/hook/useWindowSize";
 import { createUseStyles } from 'react-jss';
 import { Color } from '../style/color';
+import 'swiper/css';
 
 const homeStyle = createUseStyles({
     container: {
       maxWidth: '100%',
-      height: 200,
+      height: 250,
       padding: 30,
       display: 'block',
       flexDirection: 'row',
-      //'flex-wrap': 'wrap',
-      //justifyContent: 'space-around',
-      //'white-space': 'nowrap',
       overflow: 'hidden'
     },
     card: {
@@ -45,15 +45,41 @@ const homeStyle = createUseStyles({
 export default function Home(props) {
     const classes = homeStyle();
     const { topList } = props;
-  
+    const size = useWindowSize(); 
+    const [slide, setSlide] = useState(1);
+
     useEffect(() => {
       //console.log(topList);
     }, [topList]);
+    
+    const slidePerView = size => {
+      if(size.width>=1170 && size.width<1426) {
+        setSlide(4);
+      } else if(size.width<1170 && size.width>=1026) {
+        setSlide(3);
+      } else if(size.width<1026 && size.width>=736) {
+        setSlide(2);
+      } else if(size.width<736) {
+        setSlide(1);
+      } else setSlide(5);
+    };
 
+    useEffect(() => {
+      console.log(size);
+      size && slidePerView(size);
+    }, [size]);
+
+   
     return (
       <div className={classes.container}>
+        <Swiper
+          spaceBetween={18}
+          slidesPerView={slide}
+          onSlideChange={() => console.log('slide change')}
+          //onSwiper={(swiper) => console.log(swiper)}
+        >
         { topList && topList.map( item =>
-
+        <SwiperSlide>
         <Card className={classes.card}>
           <CardActionArea sx={{
              width: '100%', 
@@ -61,9 +87,9 @@ export default function Home(props) {
              flexDirection: 'column',
              justifyContent: 'start', 
              alignItems: 'center',
-             paddingTop: 1.5 }}>
+             paddingTop: 2.5 }}>
             <CardMedia
-              sx={{width: 150, borderRadius: 1}}
+              sx={{width: 160, borderRadius: 1}}
               component='img'
               height='140'
               src={item?.url}
@@ -74,8 +100,9 @@ export default function Home(props) {
             </CardContent>
           </CardActionArea>
         </Card>
-
-        )} 
+        </SwiperSlide>
+        )}
+        </Swiper> 
       </div>
     ); 
 }
