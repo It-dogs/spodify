@@ -14,9 +14,9 @@ import '../style/swiperStyle.css';
 
 const homeStyle = createUseStyles({
     container: {
+      //border: 'solid',
       maxWidth: '100%',
-      height: 250,
-      padding: 30,
+      minHeight: 280,
       display: 'block',
       flexDirection: 'row',
       overflow: 'hidden'
@@ -43,25 +43,25 @@ const homeStyle = createUseStyles({
       color: Color.GREY,
       'white-space': 'nowrap',
       overflow: 'hidden',
-      'text-overflow': 'ellipsis',
-      //resize: 'horizontal',
+      'text-overflow': 'ellipsis'
     }
 })
   
 export default function Home(props) {
     const classes = homeStyle();
-    const { categories, topList, spotify } = props;
+    const { categories, spotify } = props;
     const size = useWindowSize(); 
     const [slide, setSlide] = useState(1);
-    const [playList, setPlayList] = useState([]);
+    const [playList, setPlayList] = useState(null);
 
     useEffect(() => {
-      console.log(categories);
-      const ran = Math.floor(Math.random() * (categories.length)); console.log(ran)
+      //console.log(categories);
+      const ran = Math.floor(Math.random() * (categories.length)); 
       if(ran<5) {
-        let list = [];
+        let listObj = {};
         for(let i=0; i<ran; i++) {
           //console.log(categories[i]?.id);
+          if(categories[i]) listObj[[(categories[i]).name]] = [];
           categories[i] && spotify
             .getCategoryPlaylists(categories[i]?.id)
               .then(data => {
@@ -73,7 +73,7 @@ export default function Home(props) {
                   temp.url = item.images[0].url? item.images[0].url:null;
                   temp.name = item.name? item.name:null;
                   temp.tracks = item.tracks.href? item.tracks.href:null;
-                  !_.isEmpty(temp) && list.push(temp);
+                  (!_.isEmpty(temp) && categories[i]) && listObj[[(categories[i]).name]].push(temp);
                 });
 
                })
@@ -81,6 +81,7 @@ export default function Home(props) {
         }
         for(let j=categories.length-1; j>categories.length-6+ran; j--) {
           //console.log(categories[j]?.id);
+          if(categories[j]) listObj[[(categories[j]).name]] = [];
           categories[j] && spotify
             .getCategoryPlaylists(categories[j]?.id)
               .then(data => {
@@ -92,17 +93,18 @@ export default function Home(props) {
                   temp.url = item.images[0].url? item.images[0].url:null;
                   temp.name = item.name? item.name:null;
                   temp.tracks = item.tracks.href? item.tracks.href:null;
-                  !_.isEmpty(temp) && list.push(temp);
+                  (!_.isEmpty(temp) && categories[j]) && listObj[[(categories[j]).name]].push(temp);
                 });
 
                })
                .catch(err=>console.log(err));
         }
-        setPlayList(list);
+        setPlayList(listObj);
       } else {
-        let list = [];
+        let listObj = [];
         for(let i=ran-1; i>ran-6; i--) {
           //console.log(categories[i]?.id);
+          if(categories[i]) listObj[[(categories[i]).name]] = [];
           categories[i] && spotify
             .getCategoryPlaylists(categories[i]?.id)
               .then(data => {
@@ -114,13 +116,13 @@ export default function Home(props) {
                   temp.url = item.images[0].url? item.images[0].url:null;
                   temp.name = item.name? item.name:null;
                   temp.tracks = item.tracks.href? item.tracks.href:null;
-                  !_.isEmpty(temp) && list.push(temp);
+                  (!_.isEmpty(temp) && categories[i]) && listObj[[(categories[i]).name]].push(temp);
                 });
 
                })
                .catch(err=>console.log(err));
         }
-        setPlayList(list);
+        setPlayList(listObj);
       }
     }, [categories]);
 
@@ -141,18 +143,142 @@ export default function Home(props) {
       size && slidePerView(size);
     }, [size]);
 
-   
+    useEffect(() => { console.log(playList)
+      //playList && Object.keys(playList).map((i)=>console.log(playList[i]));
+    }, [playList]);
+
+
+    /* const renderPlayList = list => { console.log(list)
+        list.map( item =>
+          <SwiperSlide>
+          <Card className={classes.card}>
+            <CardActionArea sx={{
+               width: '100%', 
+               display: 'flex', 
+               flexDirection: 'column',
+               justifyContent: 'start', 
+               alignItems: 'center',
+               paddingTop: 2.5 }}>
+              <CardMedia
+                sx={{width: 160, borderRadius: 1}}
+                component='img'
+                height='140'
+                src={item?.url}
+              />
+              <CardContent>
+                <Typography variant='body2' className={classes.text_title}>{item?.name}</Typography>
+                <Typography variant='body2' className={classes.text_desc}>{item?.description}</Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+          </SwiperSlide>);
+    } */
+    
+    /* const showCategory = () => 
+
+       
+      Object.keys(playList).map(i => <>
+        <Typography variant='h5' sx={{color: '#FFFFFF', paddingLeft: 5}}>{i}</Typography>
+        <div className={classes.container}>
+          <Swiper
+            spaceBetween={18}
+            slidesPerView={slide}
+            modules={[Navigation, Pagination, Scrollbar, A11y]}
+            allowTouchMove={false}
+            navigation={true}
+            pagination={{ clickable: true }}
+          >
+            {  
+                playList.i.map( item =>
+                  <SwiperSlide>
+                  <Card className={classes.card}>
+                    <CardActionArea sx={{
+                       width: '100%', 
+                       display: 'flex', 
+                       flexDirection: 'column',
+                       justifyContent: 'start', 
+                       alignItems: 'center',
+                       paddingTop: 2.5 }}>
+                      <CardMedia
+                        sx={{width: 160, borderRadius: 1}}
+                        component='img'
+                        height='140'
+                        src={item?.url}
+                      />
+                      <CardContent>
+                        <Typography variant='body2' className={classes.text_title}>{item?.name}</Typography>
+                        <Typography variant='body2' className={classes.text_desc}>{item?.description}</Typography>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                  </SwiperSlide>)
+
+            }
+          </Swiper>
+        </div></>); */
+
+      /* for(let key in playList) { 
+        return <>
+          <Typography variant='h5' sx={{color: '#FFFFFF', paddingLeft: 5}}>{key}</Typography>
+          <div className={classes.container}>
+            <Swiper
+              spaceBetween={18}
+              slidesPerView={slide}
+              modules={[Navigation, Pagination, Scrollbar, A11y]}
+              allowTouchMove={false}
+              navigation={true}
+              pagination={{ clickable: true }}
+            >
+              {renderPlayList(playList[key])}
+            </Swiper>
+          </div></> 
+      } */
+    
+    
     return (
-      <div className={classes.container}>
-       <Swiper
-          spaceBetween={18}
-          slidesPerView={slide}
-          modules={[Navigation, Pagination, Scrollbar, A11y]}
-          allowTouchMove={false}
-          navigation={true}
-          pagination={{ clickable: true }}
-        > 
-        { playList && playList.map( item =>
+     <>
+      {/* <Typography variant='h5' sx={{color: '#FFFFFF', paddingLeft: 5}}>{categories.topLists}</Typography> */}
+      {/* <div className={classes.container}> */} 
+       { playList && Object.keys(playList).map((category, index) => <>
+            {<Typography variant='h5' sx={{color: '#FFFFFF', paddingLeft: 5}}>{category}</Typography>}
+            <div className={classes.container}>
+              <Swiper
+                spaceBetween={18}
+                slidesPerView={slide}
+                modules={[Navigation, Pagination, Scrollbar, A11y]}
+                allowTouchMove={false}
+                navigation={true}
+                pagination={{ clickable: true }}
+              >
+                {   
+                    playList && playList[Object.keys(playList)[index]].map( item =>
+                      <SwiperSlide>
+                      <Card className={classes.card}>
+                        <CardActionArea sx={{
+                           width: '100%', 
+                           display: 'flex', 
+                           flexDirection: 'column',
+                           justifyContent: 'start', 
+                           alignItems: 'center',
+                           paddingTop: 2.5 }}>
+                          <CardMedia
+                            sx={{width: 160, borderRadius: 1}}
+                            component='img'
+                            height='150'
+                            src={item?.url}
+                          />
+                          <CardContent>
+                            <Typography variant='body2' className={classes.text_title}>{item?.name}</Typography>
+                            <Typography variant='body2' className={classes.text_desc}>{item?.description}</Typography>
+                          </CardContent>
+                        </CardActionArea>
+                      </Card>
+                      </SwiperSlide>)
+                }
+              </Swiper>
+            </div></>) }
+        { 
+        /* playList && playList.map( item =>
         <SwiperSlide>
         <Card className={classes.card}>
           <CardActionArea sx={{
@@ -175,8 +301,9 @@ export default function Home(props) {
           </CardActionArea>
         </Card>
         </SwiperSlide>
-        )}
-       </Swiper>
-      </div>
+        ) */}
+      {/*  </Swiper> */}
+      {/* </div> */}
+     </>
     ); 
 }
