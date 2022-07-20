@@ -1,4 +1,4 @@
-# Spodify app(spotify clone)
+# Spodify app (spotify clone)
 
 #### Description
 This is a spotify clone project called spodify developed by YinHk(Ken), using the sportify API. 
