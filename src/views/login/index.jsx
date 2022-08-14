@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { AppBar, Toolbar, Typography, Box, Avatar, Checkbox, Link } from "@mui/material";
 import { loginStyle } from '../style/loginStyle';
 import { useNavigate } from 'react-router-dom';

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { createUseStyles } from 'react-jss';
 
-import { Color }  from '../style/color';
 import Sidebar from "../components/sidebar/sidebar";
 import Menu from "../components/Menu";
 import '../style/sidebarStyle.css';
