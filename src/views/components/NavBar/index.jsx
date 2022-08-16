@@ -22,11 +22,6 @@ const NavBar = (props) => {
       setScrollBarTop(el.scrollTop);
     };
 
-    /*  const scrollToView = name => {
-        const anchor =  document.getElementById(name);
-        anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }; */
-
     //handle menu close
     const handleClose = () => {
       setAnchorEl(null);
