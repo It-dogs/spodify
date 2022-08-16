@@ -18,8 +18,9 @@ export default function Sidebar(props) {
 
   const resize = React.useCallback(
     (mouseMoveEvent) => {
-      if (isResizing && mouseMoveEvent.clientX -
-        sidebarRef.current.getBoundingClientRect().left>=180) {
+      if (isResizing && ( mouseMoveEvent.clientX -
+        sidebarRef.current.getBoundingClientRect().left>=180 && mouseMoveEvent.clientX -
+        sidebarRef.current.getBoundingClientRect().left<=390 )) {
         setSidebarWidth(
           mouseMoveEvent.clientX -
             sidebarRef.current.getBoundingClientRect().left

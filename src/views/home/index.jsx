@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { Card, CardContent, CardActionArea, CardMedia, Typography } from '@mui/material';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -47,7 +47,7 @@ const homeStyle = createUseStyles({
     }
 })
   
-export default function Home(props) {
+const Home = memo((props) => {
     const classes = homeStyle();
     const { categories, spotify } = props;
     const size = useWindowSize(); 
@@ -306,4 +306,6 @@ export default function Home(props) {
       {/* </div> */}
      </>
     ); 
-}
+})
+
+export default Home;

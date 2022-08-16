@@ -9,7 +9,9 @@ import { Color }  from './color';
 
 export const navbarStyle = createUseStyles({
     wrapper: {
-        width: '100%'
+        width: '100%',
+        zIndex: 10,
+        position: 'fixed'
     },
     toolbar: {
         display: "flex",
@@ -62,8 +64,7 @@ export const MenuButton = styled(Button)({
 })
 
 export const MenuList = styled(Menu)({
-    'backdrop-filter': 'blur(1.5px) brightness(40%)',
-    
+    'backdrop-filter': 'blur(1.5px) brightness(40%)' 
 })
 
 export const MenuItems = styled(MenuItem)({

@@ -4,6 +4,7 @@ import NavBar from '../NavBar';
 import Home from '../../home';
 import emitter from '../../utils/emitter';
 import spotifyWebApi from 'spotify-web-api-js';
+import '../../style/scrollBarStyle.css';
 import _ from 'lodash';
 import { Typography } from "@mui/material";
 
@@ -17,12 +18,18 @@ const menuStyle = createUseStyles({
     width: '100%',
     height: '100%',
     overflowY: 'auto'
+  },
+  homeContainer: {
+    height: '100%', 
+    flexDirection: 'column', 
+    justifyContent: 'start',
+    marginTop: 80
   }
 })
 
 const Menu = (props) => {
     const classes = menuStyle();
-    const { token } = props;
+    const { token, width } = props;
     const [currentPage, setCurrentPage] = useState('home');
     //const [topList, setTopList] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -105,15 +112,15 @@ const Menu = (props) => {
 
 
     const handleMenuContent = () => <>
-      <div style={{display: currentPage==='home'? 'flex':'none', height: '100%', flexDirection: 'column', justifyContent: 'start' }}>
+      <div className={classes.homeContainer} style={{display: currentPage==='home'? 'flex':'none'}}>
         {/* <Typography variant='h5' sx={{color: '#FFFFFF', paddingLeft: 5}}>{categories.topLists}</Typography> */}
         <Home token={token} categories={categories} spotify={spotify}/>
       </div>
     </>
 
     return (
-      <div className={classes.container}>
-        <NavBar />
+      <div id='menuContainer' className={classes.container}>
+        <NavBar width={width} />
         {handleMenuContent()}
       </div>
     );

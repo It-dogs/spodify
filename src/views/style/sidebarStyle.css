@@ -5,7 +5,7 @@
     min-width: 180px;
     max-width: 390px;
     display: flex;
-    border-right: #1f1f1f 1px solid;
+    border-right: #1f1f1f 0px solid;
     flex-direction: row;
     background: #000000;
     z-index: 2; 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, TextField, InputAdornment, IconButton } from "@mui/material";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -10,22 +10,22 @@ import { Color } from "../../style/color";
 
 
 const NavBar = (props) => {
+    let { width } = props;
     const classes = navbarStyle();
-    const [scrollPosition, setScrollPosition] = useState(0);
+    const [scrollBarTop, setScrollBarTop] = useState(0);
     const [anchorEl, setAnchorEl] = useState(null);
     const [user, setUser] = useState('yin');
     const [value, setValue] = useState(null);
     const open = Boolean(anchorEl);
 
-    const handleScroll = () => {
-        const position = window.pageYOffset;
-        setScrollPosition(position);
+    const handleScroll = (el) => { 
+      setScrollBarTop(el.scrollTop);
     };
 
-    const scrollToView = name => {
+    /*  const scrollToView = name => {
         const anchor =  document.getElementById(name);
         anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    };
+    }; */
 
     //handle menu close
     const handleClose = () => {
@@ -36,6 +36,14 @@ const NavBar = (props) => {
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
+
+    useEffect(() => {
+      const el = document.getElementById('menuContainer');
+      el.addEventListener('scroll', () => handleScroll(el), { passive: true });
+      return () => {
+        el.removeEventListener('scroll', handleScroll);
+      };
+    }, []);
 
     const searchBar = () => <form className={classes.form}>
         <TextField
@@ -72,8 +80,11 @@ const NavBar = (props) => {
     </form>
 
     return (
-      <div className={classes.wrapper}>
-        <AppBar position="sticky" sx={{ boxShadow: 'none', backgroundColor: scrollPosition===0?'transparent':'rgba(0, 0, 0, .5)'}}>
+      <div className={classes.wrapper} style={{width: `calc(100% - ${width}px)`}}>
+        <AppBar 
+          position="sticky" 
+          sx={{ boxShadow: 'none', backgroundColor: scrollBarTop<50 ? 'transparent':'rgba(0, 0, 0, 1)'}}
+        >
           <Toolbar className={classes.toolbar}>
            <div className={classes.container}>
             <NavButton
