@@ -14,7 +14,6 @@ import '../style/swiperStyle.css';
 
 const homeStyle = createUseStyles({
     container: {
-      //border: 'solid',
       maxWidth: '100%',
       minHeight: 280,
       display: 'block',
@@ -55,7 +54,29 @@ const Home = memo((props) => {
     const [playList, setPlayList] = useState(null);
 
     useEffect(() => {
-      //console.log(categories);
+      console.log(categories);
+      let listObj = {};
+      for(let i=0; i<categories.length; i++) {
+        if(categories[i]) listObj[[(categories[i]).name]] = [];
+        categories && spotify
+         .getCategoryPlaylists(categories[i]?.id)
+          .then(data => {
+            const itemList = data.playlists.items;
+            itemList.forEach(item => {
+              let temp = {};
+              temp.id = item.id? item.id:null;
+              temp.description = item.description? item.description:null;
+              temp.url = item.images[0].url? item.images[0].url:null;
+              temp.name = item.name? item.name:null;
+              temp.tracks = item.tracks.href? item.tracks.href:null;
+              (!_.isEmpty(temp) && categories[i]) && listObj[[(categories[i]).name]].push(temp);
+            });
+          })
+          .catch(err=>console.log(err));
+      }
+      setPlayList(listObj);
+
+      /*
       const ran = Math.floor(Math.random() * (categories.length)); 
       if(ran<5) {
         let listObj = {};
@@ -123,10 +144,10 @@ const Home = memo((props) => {
                .catch(err=>console.log(err));
         }
         setPlayList(listObj);
-      }
+      }*/
     }, [categories]);
 
-    
+
     const slidePerView = size => {
       if(size.width>=1170 && size.width<1426) {
         setSlide(4);
@@ -143,7 +164,8 @@ const Home = memo((props) => {
       size && slidePerView(size);
     }, [size]);
 
-    useEffect(() => { console.log(playList)
+    useEffect(() => { 
+      console.log(playList)
       //playList && Object.keys(playList).map((i)=>console.log(playList[i]));
     }, [playList]);
 
