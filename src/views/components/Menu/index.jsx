@@ -77,7 +77,7 @@ const Menu = (props) => {
       spotify
         .getCategories()
           .then(data=> {
-            console.log(data);
+            //console.log(data);
             let list = [];
             const categoryList = data.categories.items;
             categoryList.forEach(item => {

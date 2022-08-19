@@ -78,7 +78,7 @@ const NavBar = (props) => {
       <div className={classes.wrapper} style={{width: `calc(100% - ${width}px)`}}>
         <AppBar 
           position="sticky" 
-          sx={{ boxShadow: 'none', backgroundColor: scrollBarTop<50 ? 'transparent':'rgba(0, 0, 0, 1)'}}
+          sx={{ boxShadow: 'none', backgroundColor: scrollBarTop<600 ? 'transparent':'rgba(0, 0, 0, 1)'}}
         >
           <Toolbar className={classes.toolbar}>
            <div className={classes.container}>
