@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from "react";
+import React, { useState, useEffect, useLayoutEffect, memo } from "react";
 import { Card, CardContent, CardActionArea, CardMedia, Typography } from '@mui/material';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -54,10 +54,40 @@ const Home = memo((props) => {
     const [slide, setSlide] = useState(1);
     const [playList, setPlayList] = useState(null);
 
-    useEffect(() => {
-      console.log(categories);
-      let listObj = {};
-      for(let i=0; i<categories.length; i++) {
+    async function handleRequest() {
+      try {
+        let listObj = {};
+        let res = await Promise.all(
+          categories.forEach( category => {
+            listObj[[category.name]] = [];
+            spotify.getCategoryPlaylists(category?.id)
+            .then(data => { console.log(data.playlists.items);
+              const itemList = data.playlists.items;
+              itemList && itemList.forEach(item => {   //console.log(item.id);
+                /*let temp = {};
+                temp.id = item.id? item.id:null;
+                temp.description = item.description? item.description:null;
+                temp.url = item.images[0].url? item.images[0].url:null;
+                temp.name = item.name? item.name:null;
+                temp.tracks = item.tracks.href? item.tracks.href:null;
+                (!_.isEmpty(temp) && category) && listObj[[category.name]].push(temp); */
+              });
+            })
+        }));
+        console.log(res);
+      } catch (error) {
+        console.log(error); 
+      }
+    };
+
+
+    useLayoutEffect(() => {
+      //console.log(categories);
+      //let listObj = {};
+      categories && handleRequest();
+      
+
+      /* for(let i=0; i<categories.length; i++) {
         if(categories[i]) listObj[[(categories[i]).name]] = [];
         categories && spotify
          .getCategoryPlaylists(categories[i]?.id)
@@ -72,10 +102,12 @@ const Home = memo((props) => {
               temp.tracks = item.tracks.href? item.tracks.href:null;
               (!_.isEmpty(temp) && categories[i]) && listObj[[(categories[i]).name]].push(temp);
             });
+            setPlayList(listObj);
           })
+          //.then(() => setPlayList(listObj))
           .catch(err=>console.log(err));
-      }
-      setPlayList(listObj);
+      } */
+      //!_.isEmpty(listObj) && setPlayList(listObj); 
     }, [categories]);
 
 
@@ -96,7 +128,7 @@ const Home = memo((props) => {
     }, [size]);
 
     useEffect(() => { 
-      console.log(playList);
+      //console.log(playList);
       //playList && Object.keys(playList).map((i)=>console.log(playList[i]));
     }, [playList]);
     
