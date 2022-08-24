@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { AppBar, Toolbar, Typography, TextField, InputAdornment, IconButton } from "@mui/material";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -9,7 +9,7 @@ import { navbarStyle, NavButton, MenuButton, MenuList, MenuItems } from '../../s
 import { Color } from "../../style/color";
 
 
-const NavBar = (props) => {
+const NavBar = memo((props) => {
     let { width } = props;
     const classes = navbarStyle();
     const [scrollBarTop, setScrollBarTop] = useState(0);
@@ -133,6 +133,6 @@ const NavBar = (props) => {
         </AppBar>
       </div>
     );
-}
+});
 
 export default NavBar;
