@@ -13,6 +13,7 @@ const menuStyle = createUseStyles({
     overflowY: 'auto'
   },
   homeContainer: {
+    width: '100%',
     height: '100%', 
     flexDirection: 'column', 
     justifyContent: 'start',

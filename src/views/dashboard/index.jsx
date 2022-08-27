@@ -54,7 +54,7 @@ export default function Dashboard(props) {
           });
       }));
       let obj;
-      if(data) obj = data.reduce((x, y) => Object.assign(x,y)); //console.log(obj);
+      if(data) obj = data.reduce((x, y) => Object.assign(x, y)); //console.log(obj);
       !_.isEmpty(obj) && setPlayList(obj);
     } catch (error) {
       console.log(error); 

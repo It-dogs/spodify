@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useLayoutEffect, memo } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { Card, CardContent, CardActionArea, CardMedia, Typography } from '@mui/material';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { LoaderContent, LoaderTitle } from '../components/loader';
+import ContentLoader from "react-content-loader";
 import useWindowSize from "../utils/hook/useWindowSize";
 import { createUseStyles } from 'react-jss';
 import { Color } from '../style/color';
-//import useForceUpdate from "../utils/hook/useForceUpdate";
 import _ from 'lodash';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -17,8 +18,11 @@ const homeStyle = createUseStyles({
     container: {
       maxWidth: '100%',
       minHeight: 280,
-      display: 'block',
+      //display: 'block',
+      display: 'flex',
       flexDirection: 'row',
+      justifyContent: 'space-around',
+      alignItems: 'center',
       overflow: 'hidden'
     },
     card: {
@@ -33,6 +37,15 @@ const homeStyle = createUseStyles({
       '& :hover': {
         background:  Color.DEEP_GREY
       }  
+    },
+    loading: {
+      //justifyContent: '100%',
+      marginLeft: 25,
+      width: 180, 
+      height: 250, 
+      marginTop: 20,
+      borderRadius: 5,
+      background: Color.LIGHT_BLACK,
     },
     text_title: {
       color: '#FFFFFF',
@@ -49,70 +62,11 @@ const homeStyle = createUseStyles({
   
 const Home = memo((props) => {
     const classes = homeStyle();
-    const { playList/* , categories, spotify */ } = props;
+    let { playList } = props;
     const size = useWindowSize(); 
     const [slide, setSlide] = useState(1);
-    //const [playList, setPlayList] = useState(null);
-
-    /* async function handleRequest() {
-      try { 
-        let listObj = {};
-        let data = await Promise.all(
-          categories.map( category => { //console.log(category.name);
-            listObj[[category.name]] = [];
-            spotify.getCategoryPlaylists(category?.id)
-            .then(res => {
-              const itemList = res.playlists.items; 
-              itemList.forEach(item => {
-                let temp = {}; 
-                temp.id = item? item.id:null;
-                temp.description = item? item.description:null;
-                temp.url = item? item.images[0].url:null;
-                temp.name = item? item.name:null;
-                temp.tracks = item? item.tracks.href:null;
-                (!_.isEmpty(temp) && category) && listObj[[category.name]].push(temp);
-              }); //console.log(listObj[[category.name]]);
-            })
-            return listObj[[category.name]];
-        }));
-        //console.log(listObj);
-        const res = await data;
-        res && setPlayList(listObj);
-      } catch (error) {
-        console.log(error); 
-      }
-    }; */
-
-
-    /* useLayoutEffect(() => {
-      //console.log(categories);
-      //let listObj = {};
-      !_.isEmpty(categories) && handleRequest();
-      
-      /* for(let i=0; i<categories.length; i++) {
-        if(categories[i]) listObj[[(categories[i]).name]] = [];
-        categories && spotify
-         .getCategoryPlaylists(categories[i]?.id)
-          .then(data => {
-            const itemList = data.playlists.items;
-            itemList.forEach(item => {
-              let temp = {};
-              temp.id = item.id? item.id:null;
-              temp.description = item.description? item.description:null;
-              temp.url = item.images[0].url? item.images[0].url:null;
-              temp.name = item.name? item.name:null;
-              temp.tracks = item.tracks.href? item.tracks.href:null;
-              (!_.isEmpty(temp) && categories[i]) && listObj[[(categories[i]).name]].push(temp);
-            });
-            setPlayList(listObj);
-          })
-          //.then(() => setPlayList(listObj))
-          .catch(err=>console.log(err));
-      } 
-      //!_.isEmpty(listObj) && setPlayList(listObj); 
-    }, [categories]); */
-
-
+    const dummy = [{}, {}, {}, {}];
+    
     const slidePerView = size => {
       if(size.width>=1170 && size.width<1426) {
         setSlide(4);
@@ -128,18 +82,12 @@ const Home = memo((props) => {
     useEffect(() => {
       size && slidePerView(size);
     }, [size]);
-
-    /* useEffect(() => { 
-      console.log(playList);
-      //playList && Object.keys(playList).map((i)=>console.log(playList[i]));
-    }, [playList]); */
-    
     
     return (
       <>
-       { playList && Object.keys(playList).map((category, index) => <>
+       { /* playList? Object.keys(playList).map((category, index) => <>
             {<Typography variant='h5' sx={{color: '#FFFFFF', paddingLeft: 5}}>{category}</Typography>}
-            <div className={classes.container}>
+            <div className={classes.container}>     
               <Swiper
                 spaceBetween={18}
                 slidesPerView={slide}
@@ -174,7 +122,33 @@ const Home = memo((props) => {
                       </SwiperSlide>)
                 }
               </Swiper>
-            </div></>) }
+            </div></>):  */
+            dummy.map(() => <>
+              {/* <div style={{borderStyle: 'solid'}}>{LoaderTitle}</div> */}
+              <div className={classes.container}>
+                {dummy.map(() => <Card className={classes.loading}>{
+                  <ContentLoader 
+                  speed={1.5}
+                  //width={400}
+                  //height={160}
+                  //viewBox="0 0 400 160"
+                  backgroundColor="#d9d9d9"
+                  foregroundColor="#8f8f8f"
+                  {...props}
+                >
+                  <rect x="0" y="10" rx="3" ry="3" width="0" height="150" />
+    <rect x="0" y="140" rx="3" ry="3" width="100%" height="20" />
+    <rect x="0" y="30" rx="3" ry="3" width="239" height="6" />
+    <rect x="0" y="40" rx="3" ry="3" width="274" height="6" /> 
+                  
+                </ContentLoader>
+
+                }</Card>)}
+              </div>
+            </>) 
+
+            
+        }
       </>
     ); 
 })
