@@ -2,7 +2,6 @@ import React, { useState, useEffect, memo } from "react";
 import { Card, CardContent, CardActionArea, CardMedia, Typography } from '@mui/material';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { LoaderContent, LoaderTitle } from '../components/loader';
 import ContentLoader from "react-content-loader";
 import useWindowSize from "../utils/hook/useWindowSize";
 import { createUseStyles } from 'react-jss';
@@ -39,11 +38,8 @@ const homeStyle = createUseStyles({
       }  
     },
     loading: {
-      //justifyContent: '100%',
-      marginLeft: 25,
       width: 180, 
       height: 250, 
-      marginTop: 20,
       borderRadius: 5,
       background: Color.LIGHT_BLACK,
     },
@@ -85,20 +81,20 @@ const Home = memo((props) => {
     
     return (
       <>
-       { /* playList? Object.keys(playList).map((category, index) => <>
+       {  playList? Object.keys(playList).map((category, index) => <>
             {<Typography variant='h5' sx={{color: '#FFFFFF', paddingLeft: 5}}>{category}</Typography>}
             <div className={classes.container}>     
-              <Swiper
+             {/*  <Swiper
                 spaceBetween={18}
                 slidesPerView={slide}
                 modules={[Navigation, Pagination, Scrollbar, A11y]}
                 allowTouchMove={false}
                 navigation={true}
                 pagination={{ clickable: true }}
-              >
+              > */}
                 {   
                     playList && playList[Object.keys(playList)[index]].map( item =>
-                      <SwiperSlide>
+                     /* <SwiperSlide> */
                       <Card className={classes.card}>
                         <CardActionArea sx={{
                            width: '100%', 
@@ -119,38 +115,41 @@ const Home = memo((props) => {
                           </CardContent>
                         </CardActionArea>
                       </Card>
-                      </SwiperSlide>)
+                      /* </SwiperSlide> */)
                 }
-              </Swiper>
-            </div></>):  */
+              {/* </Swiper> */}
+            </div></>):
             dummy.map(() => <>
-              {/* <div style={{borderStyle: 'solid'}}>{LoaderTitle}</div> */}
-              <div className={classes.container}>
-                {dummy.map(() => <Card className={classes.loading}>{
-                  <ContentLoader 
+              <div style={{height: 28}}>{
+                <ContentLoader 
                   speed={1.5}
-                  //width={400}
-                  //height={160}
-                  //viewBox="0 0 400 160"
-                  backgroundColor="#d9d9d9"
-                  foregroundColor="#8f8f8f"
+                  viewBox="0 0 100 160"
+                  backgroundColor="#858585"
+                  foregroundColor="#ababab"
                   {...props}
                 >
-                  <rect x="0" y="10" rx="3" ry="3" width="0" height="150" />
-    <rect x="0" y="140" rx="3" ry="3" width="100%" height="20" />
-    <rect x="0" y="30" rx="3" ry="3" width="239" height="6" />
-    <rect x="0" y="40" rx="3" ry="3" width="274" height="6" /> 
-                  
-                </ContentLoader>
-
-                }</Card>)}
+                  <rect x="1" y="0" width="8" height=".8" />
+                </ContentLoader>}
               </div>
-            </>) 
-
-            
+              <div className={classes.container}>
+                {dummy.map(() => <Card className={classes.loading}><CardContent>{
+                  <ContentLoader 
+                    speed={1.5}
+                    viewBox="0 0 100 160"
+                    backgroundColor="#858585"
+                    foregroundColor="#ababab"
+                    {...props}
+                  >
+                    <rect x="0" y="0" width="100%" height="90" />
+                    <rect x="0" y="120" width="100%" height="5" />
+                    <rect x="0" y="130" width="70%" height="5" />
+                  </ContentLoader>
+                }</CardContent></Card>)}
+              </div>
+            </>)  
         }
       </>
     ); 
-})
+});
 
 export default Home;
