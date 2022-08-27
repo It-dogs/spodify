@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { createUseStyles } from 'react-jss';
 import Sidebar from "../components/sidebar/sidebar";
 import Menu from "../components/Menu";
@@ -26,15 +26,43 @@ const mainStyle = createUseStyles({
 export default function Dashboard(props) {
   const { token } = props;
   const [width, setWidth] = useState(null);
-  const [categories, setCategories] = useState([]);
+  const [playList, setPlayList] = useState(null);
   const classes = mainStyle({state: {width}});
 
   const updateWidthOfSidebar = val => setWidth(val);
 
   useEffect(() => token && spotify.setAccessToken(token), [token]);
 
-  useEffect(() => {
-    //call spotify web api for list of categories
+  async function handleRequest(categories) {
+    try {  //spotify web api for list of playlists of each category
+      let data = await Promise.all(
+        categories.map( category => {  
+          return spotify.getCategoryPlaylists(category?.id).then(res => { 
+            let listObj = {};
+            listObj[[category.name]] = [];
+            const itemList = res.playlists.items;
+            itemList.forEach(item => {
+              let temp = {}; 
+              temp.id = item? item.id:null;
+              temp.description = item? item.description:null;
+              temp.url = item? item.images[0].url:null;
+              temp.name = item? item.name:null;
+              temp.tracks = item? item.tracks.href:null;
+              (!_.isEmpty(temp) && category) && listObj[[category.name]].push(temp);
+            });
+            return listObj;
+          });
+      }));
+      let obj;
+      if(data) obj = data.reduce((x, y) => Object.assign(x,y)); //console.log(obj);
+      !_.isEmpty(obj) && setPlayList(obj);
+    } catch (error) {
+      console.log(error); 
+    }
+  };
+
+  useLayoutEffect(() => {
+    //spotify web api for list of categories
     spotify
       .getCategories()
         .then(data=> {
@@ -46,16 +74,19 @@ export default function Dashboard(props) {
             temp.name = item.name? item.name:null;
             !_.isEmpty(temp) && list.push(temp);
           });
-          setCategories(list);
+          return list;
         })
-          .catch(err=>console.log(err));
+          .then(list => {
+            !_.isEmpty(list) && handleRequest(list);
+          })
+            .catch(err=>console.log(err));
   }, []);
 
   return (
     <div className={classes.container}>
       <Sidebar updateWidthOfSidebar={updateWidthOfSidebar} />
       <div style={{width: `calc(95vw - ${width}px)`}} className="appFrame"> 
-        <Menu width={width} categories={categories} spotify={spotify} {...props} />
+        <Menu width={width} playList={playList} {...props} />
       </div>
     </div>
   ); 

@@ -49,7 +49,7 @@ const homeStyle = createUseStyles({
   
 const Home = memo((props) => {
     const classes = homeStyle();
-    const { playList, categories, spotify } = props;
+    const { playList/* , categories, spotify */ } = props;
     const size = useWindowSize(); 
     const [slide, setSlide] = useState(1);
     //const [playList, setPlayList] = useState(null);
