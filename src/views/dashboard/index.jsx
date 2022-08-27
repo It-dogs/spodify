@@ -44,17 +44,19 @@ export default function Dashboard(props) {
             itemList.forEach(item => {
               let temp = {}; 
               temp.id = item? item.id:null;
+              temp.categoryId = item? category.id:null;
               temp.description = item? item.description:null;
               temp.url = item? item.images[0].url:null;
               temp.name = item? item.name:null;
               temp.tracks = item? item.tracks.href:null;
               (!_.isEmpty(temp) && category) && listObj[[category.name]].push(temp);
-            });
-            return listObj;
+            }); 
+            if(_.isEmpty(listObj[[category.name]])) delete listObj[[category.name]];
+            return listObj; 
           });
       }));
       let obj;
-      if(data) obj = data.reduce((x, y) => Object.assign(x, y)); //console.log(obj);
+      if(data) obj = data.reduce((x, y) => Object.assign(x, y)); console.log(obj);
       !_.isEmpty(obj) && setPlayList(obj);
     } catch (error) {
       console.log(error); 

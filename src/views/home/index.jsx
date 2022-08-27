@@ -1,9 +1,8 @@
 import React, { useState, useEffect, memo } from "react";
 import { Card, CardContent, CardActionArea, CardMedia, Typography } from '@mui/material';
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import ContentLoader from "react-content-loader";
 import useWindowSize from "../utils/hook/useWindowSize";
+import { Link } from "react-router-dom";
 import { createUseStyles } from 'react-jss';
 import { Color } from '../style/color';
 import _ from 'lodash';
@@ -28,7 +27,7 @@ const homeStyle = createUseStyles({
       marginLeft: 25,
       width: 180, 
       height: 250, 
-      marginTop: 20,
+      marginTop: 10,
       borderRadius: 5,
       display: 'inline-block', 
       justifyContent: '100%', 
@@ -60,64 +59,55 @@ const Home = memo((props) => {
     const classes = homeStyle();
     let { playList } = props;
     const size = useWindowSize(); 
-    const [slide, setSlide] = useState(1);
+    const [num, setNum] = useState(1);
     const dummy = [{}, {}, {}, {}];
     
-    const slidePerView = size => {
+    const itemPerView = size => {
       if(size.width>=1170 && size.width<1426) {
-        setSlide(4);
+        setNum(4);
       } else if(size.width<1170 && size.width>=1026) {
-        setSlide(3);
+        setNum(3);
       } else if(size.width<1026 && size.width>=736) {
-        setSlide(2);
+        setNum(2);
       } else if(size.width<736) {
-        setSlide(1);
-      } else setSlide(5);
+        setNum(1);
+      } else setNum(5);
     };
 
     useEffect(() => {
-      size && slidePerView(size);
+      size && itemPerView(size);
     }, [size]);
+
     
     return (
       <>
        {  playList? Object.keys(playList).map((category, index) => <>
-            {<Typography variant='h5' sx={{color: '#FFFFFF', paddingLeft: 5}}>{category}</Typography>}
+            <Link to={`/section/${playList[Object.keys(playList)[index]][0].categoryId}`}><Typography variant='h5' sx={{color: '#FFFFFF', paddingLeft: 5}}>{category}</Typography></Link>
             <div className={classes.container}>     
-             {/*  <Swiper
-                spaceBetween={18}
-                slidesPerView={slide}
-                modules={[Navigation, Pagination, Scrollbar, A11y]}
-                allowTouchMove={false}
-                navigation={true}
-                pagination={{ clickable: true }}
-              > */}
-                {   
-                    playList && playList[Object.keys(playList)[index]].map( item =>
-                     /* <SwiperSlide> */
-                      <Card className={classes.card}>
-                        <CardActionArea sx={{
-                           width: '100%', 
-                           display: 'flex', 
-                           flexDirection: 'column',
-                           justifyContent: 'start', 
-                           alignItems: 'center',
-                           paddingTop: 2.5 }}>
-                          <CardMedia
-                            sx={{width: 160, borderRadius: 1}}
-                            component='img'
-                            height='150'
-                            src={item?.url}
-                          />
-                          <CardContent>
-                            <Typography variant='body2' className={classes.text_title}>{item?.name}</Typography>
-                            <Typography variant='body2' className={classes.text_desc}>{item?.description}</Typography>
-                          </CardContent>
-                        </CardActionArea>
-                      </Card>
-                      /* </SwiperSlide> */)
-                }
-              {/* </Swiper> */}
+              { playList && playList[Object.keys(playList)[index]].map((item, index) => { console.log(playList[Object.keys(playList)[index]][0].categoryId);
+                  if (index<num) return <Card className={classes.card}> 
+                      <CardActionArea sx={{
+                        width: '100%', 
+                        display: 'flex', 
+                        flexDirection: 'column',
+                        justifyContent: 'start', 
+                        alignItems: 'center',
+                        paddingTop: 2.5 }}
+                      >
+                        <CardMedia
+                          sx={{width: 160, borderRadius: 1}}
+                          component='img'
+                          height='150'
+                          src={item?.url}
+                        />
+                        <CardContent>
+                          <Typography variant='body2' className={classes.text_title}>{item?.name}</Typography>
+                          <Typography variant='body2' className={classes.text_desc}>{item?.description}</Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  else return null;
+              })}
             </div></>):
             dummy.map(() => <>
               <div style={{height: 28}}>{
