@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 
 const Category = (props) => {
-    const { token } = props;
+    const location = useLocation();
+    const state = location.state;
+    console.log(state);
     return (
-        <><p>hello</p></>
+        <div><p>hello</p></div>
     );
 };
 

@@ -33,7 +33,7 @@ export default function Dashboard(props) {
 
   useEffect(() => token && spotify.setAccessToken(token), [token]);
 
-  async function handleRequest(categories) {
+  async function handleRequest(categories) {  
     try {  //spotify web api for list of playlists of each category
       let data = await Promise.all(
         categories.map( category => {  
@@ -56,7 +56,7 @@ export default function Dashboard(props) {
           });
       }));
       let obj;
-      if(data) obj = data.reduce((x, y) => Object.assign(x, y)); console.log(obj);
+      if(data) obj = data.reduce((x, y) => Object.assign(x, y)); 
       !_.isEmpty(obj) && setPlayList(obj);
     } catch (error) {
       console.log(error); 
@@ -69,7 +69,7 @@ export default function Dashboard(props) {
       .getCategories()
         .then(data=> {
           let list = [];
-          const categoryList = data.categories.items;
+          const categoryList = data.categories.items; 
           categoryList.forEach(item => {
             let temp = {};
             temp.id = item.id? item.id:null;

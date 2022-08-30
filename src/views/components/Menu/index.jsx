@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { createUseStyles } from 'react-jss';
 import NavBar from '../NavBar';
 import Home from '../../home';
+import Category from "../.././category";
 import emitter from '../../utils/emitter';
 import '../../style/scrollBarStyle.css';
 import _ from 'lodash';
@@ -23,7 +24,7 @@ const menuStyle = createUseStyles({
 
 const Menu = (props) => {
     const classes = menuStyle();
-    const { token, playList, width } = props;
+    const { token, playList, width, type } = props;
     const [currentPage, setCurrentPage] = useState('home');
     
     useEffect(() => {
@@ -44,7 +45,8 @@ const Menu = (props) => {
 
     const handleMenuContent = () => <>
       <div className={classes.homeContainer} style={{display: currentPage==='home'? 'flex':'none'}}>
-        <Home token={token} playList={playList} />
+        {type==='home' && <Home token={token} playList={playList} />}
+        {type==='category' && <Category />}
       </div>
     </>
 

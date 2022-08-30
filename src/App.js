@@ -4,7 +4,6 @@ import Login from "./views/login";
 import SignUp from "./views/sipnUp";
 import ForgotPw from "./views/forgotPw";
 import Dashboard from "./views/dashboard";
-import Category from "./views/category";
 
 function App() {
   const [token, setToken] = useState(null);
@@ -23,8 +22,8 @@ function App() {
         <Route path="/callback" caseSensitive={false} element={ token? <Navigate to="/home" />:<Login /> } />
         <Route path="/sign_up" caseSensitive={false} element={ <SignUp /> } />
         <Route path="/forgot/password" caseSensitive={false} element={ <ForgotPw /> } />
-        <Route path="/home" caseSensitive={false} element={ token? <Dashboard token={token} />:<Navigate to="/" /> } />
-        <Route path="/section/:id" component={token? <Category token={token} />:<Navigate to="/" />} />
+        <Route path="/home" caseSensitive={false} element={ token? <Dashboard token={token} type='home' />:<Navigate to="/" /> } />
+        <Route path="/category/:id" caseSensitive={false} element={token? <Dashboard token={token} type='category'/>:<Navigate to="/" />} />
       </Routes>
     </Router>
   );

@@ -16,7 +16,6 @@ const homeStyle = createUseStyles({
     container: {
       maxWidth: '100%',
       minHeight: 280,
-      //display: 'block',
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'space-around',
@@ -47,11 +46,22 @@ const homeStyle = createUseStyles({
       fontWeight: 700
     },
     text_desc: {
-      width: 150,
+      maxWidth: 150,
       color: Color.GREY,
       'white-space': 'nowrap',
       overflow: 'hidden',
       'text-overflow': 'ellipsis'
+    },
+    linkStyle: {
+      width: 180,
+      marginLeft: 25,
+      display: 'flex',
+      justifyContent: 'start',
+      textDecoration: 'none',
+      '& :hover': {
+        textDecoration: 'underline',
+        textDecorationColor: '#FFFFFF'
+      } 
     }
 })
   
@@ -82,9 +92,17 @@ const Home = memo((props) => {
     return (
       <>
        {  playList? Object.keys(playList).map((category, index) => <>
-            <Link to={`/section/${playList[Object.keys(playList)[index]][0].categoryId}`}><Typography variant='h5' sx={{color: '#FFFFFF', paddingLeft: 5}}>{category}</Typography></Link>
+            <Link 
+              to={`/category/${playList[Object.keys(playList)[index]][0].categoryId}`}
+              state={{
+                category: category,
+                playList: playList[Object.keys(playList)[index]]}}
+              className={classes.linkStyle}
+            >
+              <Typography variant='h5' sx={{color: '#FFFFFF'}}>{category}</Typography>
+            </Link>
             <div className={classes.container}>     
-              { playList && playList[Object.keys(playList)[index]].map((item, index) => { console.log(playList[Object.keys(playList)[index]][0].categoryId);
+              { playList && playList[Object.keys(playList)[index]].map((item, index) => { 
                   if (index<num) return <Card className={classes.card}> 
                       <CardActionArea sx={{
                         width: '100%', 
