@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import classnames from 'classnames';
 import { Box, Avatar, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
+import { useNavigate } from "react-router-dom";
 import { createUseStyles } from 'react-jss';
 import HomeIcon from '@mui/icons-material/Home';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
@@ -46,14 +47,15 @@ const list = (hoverItem, activeItem) => [
 export default function ListTable(props) {
    const [hoverItem, setHoverItem] = useState({index: null});
    const [activeItem, setActiveItem] = useState({index: 0});
+   let navigate = useNavigate();
    const classes = tableStyle();
 
-   
    //emit signal for tab change in sidebar
    useEffect(() => {
       switch(activeItem.index) {
         case 0: 
           emitter.emit('home');
+          navigate("/home");
           break;
         case 1: 
           emitter.emit('search');
@@ -70,6 +72,13 @@ export default function ListTable(props) {
       }
    }, [activeItem]);
 
+
+   useEffect(() => {
+    emitter.on('null', ()=>setActiveItem({index: null}));
+    return () => {
+      emitter.off('null');
+    }
+   }, [])
 
    return (
     <div className={classes.container}>

@@ -5,12 +5,8 @@ import useWindowSize from "../utils/hook/useWindowSize";
 import { Link } from "react-router-dom";
 import { createUseStyles } from 'react-jss';
 import { Color } from '../style/color';
+import emitter from '../utils/emitter';
 import _ from 'lodash';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
-import '../style/swiperStyle.css';
 
 const homeStyle = createUseStyles({
     container: {
@@ -98,6 +94,7 @@ const Home = memo((props) => {
                 category: category,
                 playList: playList[Object.keys(playList)[index]]}}
               className={classes.linkStyle}
+              onClick={() => emitter.emit('null')}
             >
               <Typography variant='h5' sx={{color: '#FFFFFF'}}>{category}</Typography>
             </Link>

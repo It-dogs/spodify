@@ -33,7 +33,7 @@ const Menu = (props) => {
       emitter.on('library', ()=>setCurrentPage('library'));
       emitter.on('create_playlist', ()=>setCurrentPage('create_playlist'));
       emitter.on('liked_songs', ()=>setCurrentPage('liked_songs'));
-    
+     
       return () => {
         emitter.off('home');
         emitter.off('search');
@@ -44,7 +44,7 @@ const Menu = (props) => {
     }, []);
 
     const handleMenuContent = () => <>
-      <div className={classes.homeContainer} style={{display: currentPage==='home'? 'flex':'none'}}>
+      <div className={classes.homeContainer} style={{display: (currentPage==='home'||type==='category')? 'flex':'none'}}>
         {type==='home' && <Home token={token} playList={playList} />}
         {type==='category' && <Category />}
       </div>
