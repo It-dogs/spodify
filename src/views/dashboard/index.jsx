@@ -40,7 +40,7 @@ export default function Dashboard(props) {
           return spotify.getCategoryPlaylists(category?.id).then(res => { 
             let listObj = {};
             listObj[[category.name]] = [];
-            const itemList = res.playlists.items;
+            const itemList = res.playlists.items;   //console.log(itemList);
             itemList.forEach(item => {
               let temp = {}; 
               temp.id = item? item.id:null;
@@ -55,9 +55,9 @@ export default function Dashboard(props) {
             return listObj; 
           });
       }));
-      let obj;
+      let obj; 
       if(data) obj = data.reduce((x, y) => Object.assign(x, y)); 
-      !_.isEmpty(obj) && setPlayList(obj);
+      !_.isEmpty(obj) && setPlayList(obj);                //console.log(obj)
     } catch (error) {
       console.log(error); 
     }
@@ -88,7 +88,7 @@ export default function Dashboard(props) {
     <div className={classes.container}>
       <Sidebar updateWidthOfSidebar={updateWidthOfSidebar} />
       <div style={{width: `calc(95vw - ${width}px)`}} className="appFrame"> 
-        <Menu width={width} playList={playList} {...props} />
+        <Menu width={width} playList={playList} spotify={spotify} {...props} />
       </div>
     </div>
   ); 

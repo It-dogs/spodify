@@ -3,7 +3,6 @@ import { Card, CardContent, CardActionArea, CardMedia, Typography } from '@mui/m
 import { createUseStyles } from 'react-jss';
 import { Color } from '../style/color';
 import { useLocation } from "react-router-dom";
-import { BorderColor } from "@mui/icons-material";
 
 const style = createUseStyles({
     container: {

@@ -24,7 +24,7 @@ const menuStyle = createUseStyles({
 
 const Menu = (props) => {
     const classes = menuStyle();
-    const { token, playList, width, type } = props;
+    const { spotify, playList, width, type } = props;
     const [currentPage, setCurrentPage] = useState('home');
     
     useEffect(() => {
@@ -45,8 +45,8 @@ const Menu = (props) => {
 
     const handleMenuContent = () => <>
       <div className={classes.homeContainer} style={{display: (currentPage==='home'||type==='category')? 'flex':'none'}}>
-        {type==='home' && <Home token={token} playList={playList} />}
-        {type==='category' && <Category />}
+        {type==='home' && <Home playList={playList} spotify={spotify} />}
+        {type==='category' && <Category spotify={spotify} />}
       </div>
     </>
 

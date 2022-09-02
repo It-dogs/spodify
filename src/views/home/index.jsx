@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { createUseStyles } from 'react-jss';
 import { Color } from '../style/color';
 import emitter from '../utils/emitter';
-import _ from 'lodash';
+//import _ from 'lodash';
 
 const homeStyle = createUseStyles({
     container: {
@@ -63,7 +63,7 @@ const homeStyle = createUseStyles({
   
 const Home = memo((props) => {
     const classes = homeStyle();
-    let { playList } = props;
+    let { playList, spotify } = props;
     const size = useWindowSize(); 
     const [num, setNum] = useState(1);
     const dummy = [{}, {}, {}, {}];
@@ -84,6 +84,11 @@ const Home = memo((props) => {
       size && itemPerView(size);
     }, [size]);
 
+    const handlePlay = id => {
+      id && spotify.play({
+        urls: `spotify:playlist:${id}`
+      });
+    };
     
     return (
       <>
@@ -108,6 +113,7 @@ const Home = memo((props) => {
                         justifyContent: 'start', 
                         alignItems: 'center',
                         paddingTop: 2.5 }}
+                        onClick={()=>handlePlay(item?.id)}
                       >
                         <CardMedia
                           sx={{width: 160, borderRadius: 1}}
